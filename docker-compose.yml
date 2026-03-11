@@ -2,7 +2,7 @@ services:
   pay:
     build: .
     environment:
-      - DATABASE_URL=postgresql+asyncpg://zyora:zyora_secret@db:5432/zyora_pay
+      - DATABASE_URL=postgresql+asyncpg://zyora:${DB_PASSWORD:-zyora_secret}@db:5432/zyora_pay
       - ADMIN_SECRET=${ADMIN_SECRET:-change-me-in-production}
       - WEBHOOK_SECRET=${WEBHOOK_SECRET:-webhook-secret-change-me}
       - CORS_ORIGINS=https://ztunnel.dev,https://zyora.cloud
