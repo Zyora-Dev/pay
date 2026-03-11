@@ -2,11 +2,11 @@ services:
   pay:
     build: .
     environment:
-      - DATABASE_URL=postgresql+asyncpg://zyora:${DB_PASSWORD:-zyora_secret}@db:5432/zyora_pay
-      - ADMIN_SECRET=${ADMIN_SECRET:-change-me-in-production}
-      - WEBHOOK_SECRET=${WEBHOOK_SECRET:-webhook-secret-change-me}
-      - CORS_ORIGINS=https://ztunnel.dev,https://zyora.cloud
-      - DEBUG=false
+      DATABASE_URL: "postgresql+asyncpg://zyora:zyora_secret@db:5432/zyora_pay"
+      ADMIN_SECRET: "change-me-in-production"
+      WEBHOOK_SECRET: "webhook-secret-change-me"
+      CORS_ORIGINS: "https://ztunnel.dev,https://zyora.cloud"
+      DEBUG: "false"
     depends_on:
       db:
         condition: service_healthy
@@ -30,7 +30,7 @@ services:
     environment:
       POSTGRES_DB: zyora_pay
       POSTGRES_USER: zyora
-      POSTGRES_PASSWORD: ${DB_PASSWORD:-zyora_secret}
+      POSTGRES_PASSWORD: zyora_secret
     volumes:
       - pgdata:/var/lib/postgresql/data
     healthcheck:
