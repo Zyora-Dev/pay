@@ -1,8 +1,6 @@
 services:
   pay:
     build: .
-    ports:
-      - "8000:8000"
     environment:
       - DATABASE_URL=postgresql+asyncpg://zyora:zyora_secret@db:5432/zyora_pay
       - ADMIN_SECRET=${ADMIN_SECRET:-change-me-in-production}
@@ -12,6 +10,19 @@ services:
     depends_on:
       db:
         condition: service_healthy
+    restart: unless-stopped
+
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+      - certbot-etc:/etc/letsencrypt
+      - certbot-var:/var/www/certbot
+    depends_on:
+      - pay
     restart: unless-stopped
 
   db:
@@ -31,3 +42,5 @@ services:
 
 volumes:
   pgdata:
+  certbot-etc:
+  certbot-var:
