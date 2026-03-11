@@ -1,0 +1,33 @@
+services:
+  pay:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=postgresql+asyncpg://zyora:zyora_secret@db:5432/zyora_pay
+      - ADMIN_SECRET=${ADMIN_SECRET:-change-me-in-production}
+      - WEBHOOK_SECRET=${WEBHOOK_SECRET:-webhook-secret-change-me}
+      - CORS_ORIGINS=https://ztunnel.dev,https://zyora.cloud
+      - DEBUG=false
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped
+
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: zyora_pay
+      POSTGRES_USER: zyora
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-zyora_secret}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U zyora -d zyora_pay"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+    restart: unless-stopped
+
+volumes:
+  pgdata:
