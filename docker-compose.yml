@@ -5,7 +5,7 @@ services:
       DATABASE_URL: "postgresql+asyncpg://zyora:zyora_secret@db:5432/zyora_pay"
       ADMIN_SECRET: "change-me-in-production"
       WEBHOOK_SECRET: "webhook-secret-change-me"
-      CORS_ORIGINS: "https://ztunnel.dev,https://zyora.cloud"
+      CORS_ORIGINS: "https://ztunnel.in,https://zyora.cloud"
       DEBUG: "false"
     depends_on:
       db:
